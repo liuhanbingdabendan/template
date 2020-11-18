@@ -16,13 +16,35 @@ class getTemplate extends Component {
                         label:'select',
                         type:'select',
                         parameter:'select',
-                        list:[]
+                        list:[
+                            {
+                                name:'测试一',
+                                value:'0'
+                            },
+                            {
+                                name:'测试二',
+                                value:'1'
+                            },
+                        ]
                     },
                     {
                         label:'selectMore',
                         type:'selectMore',
                         parameter:'selectMore',
-                        list:[]
+                        list:[
+                            {
+                                name:'测试多一',
+                                value:'0'
+                            },
+                            {
+                                name:'测试多二',
+                                value:'1'
+                            },
+                            {
+                                name:'测试多三',
+                                value:'2'
+                            },
+                        ]
                     },
                     {
                         label:'time',
@@ -31,14 +53,46 @@ class getTemplate extends Component {
                         list:''
                     },
                 ],
-				tabs: [],
-				table: []
+				tabs: [
+                    {
+                        name:'tab1',
+                        key:0
+                    },
+                    {
+                        name:'tab2',
+                        key:1
+                    },
+                    {
+                        name:'tab3',
+                        key:2
+                    },
+                ],
+				table: {
+                    columns:[
+                        {
+                            title:'name',
+                            dataIndex:'name',
+                        },
+                        {
+                            title:'age',
+                            dataIndex:'age',
+                        },
+                        {
+                            title:'address',
+                            dataIndex:'address',
+                        },
+                        {
+                            title:'action',
+                            dataIndex:'action',
+                            action:['add','edit'],
+                        },
+                    ]
+                }
 			}
 		};
 	}
 
 	render() {
-		console.log(this.state);
 		const { data } = this.state;
 		return (
 			<div>

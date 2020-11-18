@@ -92,56 +92,84 @@ class testTemplate extends Component {
 		function callback(key) {
 			console.log(key);
 		}
-		const columns = [
-			{
-				title: 'Name',
-				dataIndex: 'name',
-				key: 'name',
-				render: text => <a>{text}</a>
-			},
-			{
-				title: 'Age',
-				dataIndex: 'age',
-				key: 'age'
-			},
-			{
-				title: 'Address',
-				dataIndex: 'address',
-				key: 'address'
-			},
-			{
-				title: 'Tags',
-				key: 'tags',
-				dataIndex: 'tags',
-				render: tags => (
-					<span>
-						{tags.map(tag => {
-							let color = tag.length > 5 ? 'geekblue' : 'green';
-							if (tag === 'loser') {
-								color = 'volcano';
-							}
-							return (
-								<Tag color={color} key={tag}>
-									{tag.toUpperCase()}
-								</Tag>
-							);
-						})}
-					</span>
-				)
-			},
-			{
-				title: 'Action',
-				key: 'action',
-				render: (text, record) => (
-					<span>
-						<a>Invite {record.name}</a>
-						<Divider type="vertical" />
-						<a>Delete</a>
-					</span>
-				)
+		// const columns = [
+		// 	{
+		// 		title: 'Name',
+		// 		dataIndex: 'name',
+		// 		key: 'name',
+		// 		render: text => <a>{text}</a>
+		// 	},
+		// 	{
+		// 		title: 'Age',
+		// 		dataIndex: 'age',
+		// 		key: 'age'
+		// 	},
+		// 	{
+		// 		title: 'Address',
+		// 		dataIndex: 'address',
+		// 		key: 'address'
+		// 	},
+		// 	{
+		// 		title: 'Tags',
+		// 		key: 'tags',
+		// 		dataIndex: 'tags',
+		// 		render: tags => (
+		// 			<span>
+		// 				{tags.map(tag => {
+		// 					let color = tag.length > 5 ? 'geekblue' : 'green';
+		// 					if (tag === 'loser') {
+		// 						color = 'volcano';
+		// 					}
+		// 					return (
+		// 						<Tag color={color} key={tag}>
+		// 							{tag.toUpperCase()}
+		// 						</Tag>
+		// 					);
+		// 				})}
+		// 			</span>
+		// 		)
+		// 	},
+		// 	{
+		// 		title: 'Action',
+		// 		key: 'action',
+		// 		render: (text, record) => (
+		// 			<span>
+		// 				<a>Invite {record.name}</a>
+		// 				<Divider type="vertical" />
+		// 				<a>Delete</a>
+		// 			</span>
+		// 		)
+		// 	}
+		// ];
+		const listHeader = () => {
+			var columns_1 = this.props.data.table.columns;
+			var list = [];
+			for (var i in columns_1) {
+				var obj = {
+					title: columns_1[i].title,
+					dataIndex: columns_1[i].dataIndex,
+					key:columns_1[i].dataIndex,
+				};
+				if (columns_1[i].action) {
+					obj.render = (text, record) => {
+						return <div>
+							{columns_1[i].action.map((item, index) => {
+								return (
+									<span key={index}>
+										<a>{item}</a>
+										<Divider type="vertical" />
+									</span>
+								);
+							})}
+						</div>	
+					};
+				}
+				list.push(obj);
 			}
-		];
-
+			return list
+		};
+		const columns = listHeader()
+		console.log(columns)
 		const data = [
 			{
 				key: '1',
@@ -165,63 +193,87 @@ class testTemplate extends Component {
 				tags: ['cool', 'teacher']
 			}
 		];
-	console.log(this.props)
+		// console.log(this.props);
 		return (
 			<div>
 				<div className="templateHeader">
 					<Form onSubmit={this.handleSubmit} layout="inline">
-						<Form.Item label="E-mail">
-							{getFieldDecorator('email', {
-								rules: [
-									{
-										type: 'email',
-										message: 'The input is not valid E-mail!'
-									},
-									{
-										required: true,
-										message: 'Please input your E-mail!'
-									}
-								]
-							})(<Input />)}
-						</Form.Item>
-						<Form.Item label="Habitual Residence">
+						{this.props.data.search.map((item, index) => {
+							switch (item.type) {
+								case 'input':
+									return (
+										<Form.Item label={item.label} key={item.label}>
+											{getFieldDecorator(`${item.parameter}`, {
+												initialValue: '',
+												rules: [
+													{
+														required: true,
+														message: 'Please input your E-mail!'
+													}
+												]
+											})(<Input />)}
+										</Form.Item>
+									);
+								case 'select':
+									return (
+										<Form.Item label={item.label} key={item.label}>
+											{getFieldDecorator(`${item.parameter}`, {
+												initialValue: '',
+												rules: [{ required: true, message: 'Please select your gender!' }]
+											})(
+												<Select style={{ width: 160 }} placeholder="Select a option and change input text above">
+													{item.list.map((item, index) => {
+														return (
+															<Option value={item.value} key={index}>
+																{item.name}
+															</Option>
+														);
+													})}
+												</Select>
+											)}
+										</Form.Item>
+									);
+								case 'selectMore':
+									return (
+										<Form.Item label={item.label} key={item.label}>
+											{getFieldDecorator(`${item.parameter}`, {
+												initialValue: [],
+												rules: [{ required: true, message: 'Please select !' }]
+											})(
+												<Select style={{ width: 160 }} mode="multiple" placeholder="Select a option and change input text above">
+													{item.list.map((item, index) => {
+														return (
+															<Option value={item.value} key={index}>
+																{item.name}
+															</Option>
+														);
+													})}
+												</Select>
+											)}
+										</Form.Item>
+									);
+								case 'timeInterval':
+									return (
+										<Form.Item label={item.label} key={item.label}>
+											{getFieldDecorator(`${item.parameter}`, {
+												initialValue: [moment('2015/01/01', dateFormat), moment('2015/01/01', dateFormat)],
+												rules: [{ required: true, message: 'please select time' }]
+											})(<RangePicker format={dateFormat} />)}
+										</Form.Item>
+									);
+							}
+						})}
+						{/* <Form.Item label="Habitual Residence">
 							{getFieldDecorator('residence', {
 								initialValue: ['zhejiang', 'hangzhou', 'xihu'],
 								rules: [{ type: 'array', required: true, message: 'Please select your habitual residence!' }]
 							})(<Cascader options={residences} />)}
-						</Form.Item>
-						<Form.Item label="Phone Number">
+						</Form.Item> */}
+						{/* <Form.Item label="Phone Number">
 							{getFieldDecorator('phone', {
 								rules: [{ required: true, message: 'Please input your phone number!' }]
 							})(<Input addonBefore={prefixSelector} style={{ width: '100%' }} />)}
-						</Form.Item>
-						<Form.Item label="Gender">
-							{getFieldDecorator('gender', {
-								rules: [{ required: true, message: 'Please select your gender!' }]
-							})(
-								<Select style={{ width: 160 }} placeholder="Select a option and change input text above">
-									<Option value="male">male</Option>
-									<Option value="female">female</Option>
-								</Select>
-							)}
-						</Form.Item>
-						<Form.Item label="selectMore">
-							{getFieldDecorator('selectMore', {
-								initialValue: [],
-								rules: [{ required: true, message: 'Please select !' }]
-							})(
-								<Select style={{ width: 160 }} mode="multiple">
-									<Option value="jack">Jack</Option>
-									<Option value="lucy">Lucy</Option>
-									<Option value="Yiminghe">yiminghe</Option>
-								</Select>
-							)}
-						</Form.Item>
-						<Form.Item label="selectTime">
-							{getFieldDecorator('selectTime', {
-								rules: [{ required: true, message: 'please select time' }]
-							})(<RangePicker defaultValue={[moment('2015/01/01', dateFormat), moment('2015/01/01', dateFormat)]} format={dateFormat} />)}
-						</Form.Item>
+						</Form.Item> */}
 						<Form.Item {...tailFormItemLayout}>
 							<Button type="primary" htmlType="submit">
 								Register
@@ -230,10 +282,10 @@ class testTemplate extends Component {
 					</Form>
 				</div>
 				<div className="tabs">
-					<Tabs defaultActiveKey="1" onChange={callback}>
-						<TabPane tab="Tab 1" key="1"></TabPane>
-						<TabPane tab="Tab 2" key="2"></TabPane>
-						<TabPane tab="Tab 3" key="3"></TabPane>
+					<Tabs onChange={callback}>
+						{this.props.data.tabs.map((item, index) => {
+							return <TabPane tab={item.name} key={item.key}></TabPane>;
+						})}
 					</Tabs>
 				</div>
 				<div className="tableContent">
