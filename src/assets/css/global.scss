@@ -1,0 +1,120 @@
+html,
+body,
+#root {
+  height: 100%;
+}
+
+pre,
+code,
+kbd,
+samp {
+  font-family: inherit !important;
+  margin: 0;
+}
+
+.colorWeak {
+  filter: invert(80%);
+}
+
+.ant-layout {
+  min-height: 100vh;
+}
+
+canvas {
+  display: block;
+}
+
+body {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.globalSpin {
+  width: 100%;
+  margin: 40px 0 !important;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+// 全局表格居中处理
+:global(.ant-table-tbody > tr > td) {
+  padding: 12px 8px !important;
+  text-align: center !important;
+}
+
+:global(.ant-table-thead > tr > th) {
+  text-align: center !important;
+  font-weight: 700 !important;
+}
+
+:global(.ant-table-small .ant-table-tbody > tr > td) {
+  padding: 6px 8px !important;
+}
+
+// 表单处理
+:global(.ant-form-item) {
+  margin-bottom: 5px !important;
+  margin-top: 5px !important;
+}
+
+:global(form .ant-input-number) {
+  width: 100%;
+  margin-top: 0 !important;
+
+  &::-webkit-placeholder {
+    color: #ccc;
+  }
+}
+
+:global(td .ant-form-item) {
+  margin-bottom: 0 !important;
+}
+
+:global(.ant-input-number-input::-webkit-input-placeholder) {
+  color: #ccc;
+}
+
+:global(.ant-input-number-input::-moz-input-placeholder) {
+  color: #ccc;
+}
+
+:global(.ant-input-number-input::-ms-input-placeholder) {
+  color: #ccc;
+}
+
+// :global(.ant-input-number-input::input-placeholder) {
+//   color: #ccc;
+// }
+
+:global(.ant-calendar-picker-input),
+:global(.ant-calendar-input) {
+  cursor: pointer !important;
+}
+
+:global(.ant-upload-picture-card-wrapper) {
+  display: block !important;
+}
+
+.introjs-prevbutton {
+  display: none !important;
+}
+
+.introjs-bullets {
+  display: none !important;
+}
+
+.introjs-skipbutton {
+  display: none !important;
+}
+
+.ant-checkbox-wrapper + .ant-checkbox-wrapper{
+  margin-left: 0;
+}
+.pStyle{
+  color: red;
+  margin: 10px 0;
+}
